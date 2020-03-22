@@ -1,12 +1,16 @@
 package com.novatorem.twitchtovlc;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.novatorem.twitchtovlc.ui.home.HomeFragment;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -45,6 +49,13 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.preferences), Activity.MODE_PRIVATE);
+        String userToken = sharedPreferences.getString("userToken", getString(R.string.placeholder));
+        if (userToken != getString(R.string.placeholder)) {
+            setContentView(R.layout.fragment_home);
+            TextView textView = findViewById(R.id.text_home);
+            textView.setText(userToken);
+        }
     }
 
     @Override

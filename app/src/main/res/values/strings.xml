@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TwitchToVLC</string>
+    <string name="app_name">Twitch To VLC</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -12,4 +12,6 @@
     <string name="menu_slideshow">Slideshow</string>
 
     <string name="home_second">Home Second</string>
+    <string name="placeholder">Lorem Ipsum</string>
+    <string name="preferences">ttvPreferences</string>
 </resources>

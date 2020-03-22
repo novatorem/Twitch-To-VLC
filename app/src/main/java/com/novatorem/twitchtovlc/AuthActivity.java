@@ -1,5 +1,6 @@
 package com.novatorem.twitchtovlc;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.app.Activity;
@@ -31,7 +32,12 @@ public class AuthActivity extends AppCompatActivity
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 if (url.contains("https://novac.dev/x/ttv/?code=") && url.contains("&scope=user_read+user_follows_edit+user_subscriptions")) {
-                    String saved = url.substring(30, 60);
+
+                    SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.preferences), Activity.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("userToken", url.substring(30, 60));
+                    editor.commit();
+
                     finish();
                 }
                 view.loadUrl(url);
