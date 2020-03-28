@@ -12,7 +12,8 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 
-public class BasicRetrofitMoshiDemo {
+public class RestTwitch {
+    private String BASE_URL = "https://eventnotifierjson2.herokuapp.com/";
     public static void main(String[] args) throws IOException {
         Procedure data = getProcedure();
 
