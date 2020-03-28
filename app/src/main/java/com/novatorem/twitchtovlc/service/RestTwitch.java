@@ -13,8 +13,9 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 
 public class RestTwitch {
-    private String BASE_URL = "https://eventnotifierjson2.herokuapp.com/";
-    public static void main(String[] args) throws IOException {
+    private static String baseURL = "https://api.twitch.tv/helix";
+
+    public static void sampleCall(String[] args) throws IOException {
         Procedure data = getProcedure();
 
         Moshi moshi = new Moshi.Builder().build();
@@ -24,8 +25,8 @@ public class RestTwitch {
         //System.out.println(json);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://localhost:8675/")
-                .addConverterFactory(MoshiConverterFactory.create(moshi)) // com.squareup.retrofit2:converter-moshi:latest.version
+                .baseUrl(baseURL)
+                .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .build();
 
         MyApi api = retrofit.create(MyApi.class);
