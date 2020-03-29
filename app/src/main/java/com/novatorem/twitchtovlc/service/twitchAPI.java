@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.ANRequest;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
@@ -43,12 +44,10 @@ public class twitchAPI {
     public static final String QUALITY_240p30 = "240p30";
     public static final String QUALITY_144p30 = "144p30";
 
-    private final String[] NEW_QUALITIES = {
-            QUALITY_240p30,
-            QUALITY_480p30,
-            QUALITY_720p30,
-            QUALITY_720p60
-    };
+    private static String sig = "";
+    private static String tokenString = "";
+
+
 
     public static final String[] QUALITIES 			= {
             QUALITY_MOBILE,
@@ -107,13 +106,20 @@ public class twitchAPI {
                 });
     }
 
-    private HashMap<String, String> parseM3U8(String urlToRead) {
+    private static HashMap<String, String> parseM3U8(String urlToRead) {
 
         URL url;
         HttpURLConnection conn = null;
         Scanner in = null;
         String line;
         StringBuilder result = new StringBuilder();
+
+        final String[] NEW_QUALITIES = {
+                QUALITY_240p30,
+                QUALITY_480p30,
+                QUALITY_720p30,
+                QUALITY_720p60
+        };
 
         try {
             url = new URL(urlToRead.replace(" ","%20"));
@@ -174,34 +180,48 @@ public class twitchAPI {
         return resultList;
     }
 
-    //public static HashMap<String, String> getURL(String streamerName) {
-    public static void getURL(String streamerName) {
-        String sig = "";
-        String tokenString = "";
+    public static HashMap<String, String> getURL(final String streamerName, Context applicationContext) {
+        final String[] streamUrl = {""};
+        AndroidNetworking.initialize(applicationContext);
+        AndroidNetworking.setParserFactory(new JacksonParserFactory());
 
-        String resultString = Services.urlToJSONString("https://api.twitch.tv/api/channels/" + streamerName + "/access_token");
-        try {
-            JSONObject resultJSON = new JSONObject(resultString);
-            tokenString = URLEncoder.encode(resultJSON.getString("token")); // URL Encode token
-            sig = resultJSON.getString("sig");
+        ANRequest request = AndroidNetworking.get("https://api.twitch.tv/api/channels/{streamerName}/access_token")
+                .addPathParameter("streamerName", streamerName)
+                .addHeaders("Client-ID", Services.getTwitchID())
+                .setPriority(Priority.IMMEDIATE)
+                .build();
 
-            Log.d("ACCESS_TOKEN_STRING", tokenString);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        request.getAsJSONObject(new JSONObjectRequestListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("JSON Success", String.valueOf(response));
+                try {
+                    tokenString = response.getString("token");
+                    sig = URLEncoder.encode(response.getString("token"));
 
-        String streamUrl = String.format("http://usher.twitch.tv/api/channel/hls/%s.m3u8" +
-                "?player=twitchweb&" +
-                "&token=%s" +
-                "&sig=%s" +
-                "&allow_audio_only=true" +
-                "&allow_source=true" +
-                "&type=any" +
-                "&p=%s", streamerName, tokenString, sig, "" + new Random().nextInt(6));
+                    streamUrl[0] = String.format("http://usher.twitch.tv/api/channel/hls/%s.m3u8" +
+                            "?player=twitchweb&" +
+                            "&token=%s" +
+                            "&sig=%s" +
+                            "&allow_audio_only=true" +
+                            "&allow_source=true" +
+                            "&type=any" +
+                            "&p=%s", streamerName, tokenString, sig, "" + new Random().nextInt(6));
 
-        Log.d("URL", "HSL Playlist URL: " + streamUrl);
-        //return parseM3U8(streamUrl);
+                    Log.d("URL", "HSL Playlist URL: " + streamUrl[0]);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(ANError error) {
+                Log.d("JSON Failed", String.valueOf(error.getResponse()));
+            }
+
+        });
+
+        Log.d("URL", "HSL Playlist URL: " + streamUrl[0]);
+        return parseM3U8("");
     }
-
-
 }

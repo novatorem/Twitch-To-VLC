@@ -44,7 +44,7 @@ public class Services {
             }
 
         } catch (Exception exc) {
-
+            Log.v("URL TO JSON STRING", "Failed - " + exc.getMessage());
         }
 
         return result;

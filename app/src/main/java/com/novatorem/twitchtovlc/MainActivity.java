@@ -28,6 +28,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -65,8 +67,9 @@ public class MainActivity extends AppCompatActivity {
             textView.setText(userToken);
             twitchAPI.getStreams(getApplicationContext());
             Log.d("1","1");
-            twitchAPI.getURL("k3soju");
-            Log.d("2","2");
+            HashMap<String, String> mortdog = twitchAPI.getURL("mortdog", getApplicationContext());
+
+            Log.d("2", String.valueOf(mortdog));
         }
     }
 
