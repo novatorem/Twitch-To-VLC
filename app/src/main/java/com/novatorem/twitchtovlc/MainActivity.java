@@ -4,13 +4,20 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.widget.TextView;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-import com.novatorem.twitchtovlc.ui.home.HomeFragment;
+import com.jacksonandroidnetworking.JacksonParserFactory;
+import com.novatorem.twitchtovlc.service.Services;
+import com.novatorem.twitchtovlc.service.twitchAPI;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -19,6 +26,7 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -55,6 +63,10 @@ public class MainActivity extends AppCompatActivity {
             setContentView(R.layout.fragment_home);
             TextView textView = findViewById(R.id.text_home);
             textView.setText(userToken);
+            twitchAPI.getStreams(getApplicationContext());
+            Log.d("1","1");
+            twitchAPI.getURL("k3soju");
+            Log.d("2","2");
         }
     }
 
