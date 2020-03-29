@@ -209,6 +209,9 @@ public class twitchAPI {
                             "&p=%s", streamerName, tokenString, sig, "" + new Random().nextInt(6));
 
                     Log.d("URL", "HSL Playlist URL: " + streamUrl[0]);
+                    HashMap<String, String> M3U8 = parseM3U8(streamUrl[0]);
+
+                    Log.d("HERE", "HSL Playlist URL: " + M3U8);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
