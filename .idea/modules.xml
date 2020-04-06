@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/TwitchToVLC.iml" filepath="$PROJECT_DIR$/TwitchToVLC.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TwitchToVLC.iml" filepath="$PROJECT_DIR$/TwitchToVLC.iml" group="TwitchToVLC" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="TwitchToVLC/app" />
     </modules>
   </component>
 </project>
